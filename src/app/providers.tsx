@@ -6,7 +6,7 @@ import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../lib/apollo";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const apolloClient = useApollo(""); // Use your Apollo Client initialization logic here
+  const apolloClient = useApollo();
 
   return (
     <ChakraProvider>

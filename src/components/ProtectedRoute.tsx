@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       router.push("/");
     }
   }, [user, router]);
-  // Render null during the initial redirect, to prevent the protect p[age appearing before redirect
+  // Render null during the initial redirect, to prevent the protect page appearing before redirect
   if (!user?.loggedIn) {
     return null;
   }

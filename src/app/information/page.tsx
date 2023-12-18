@@ -4,10 +4,9 @@ import { useUser } from "@/context/UserContext";
 import { GET_INFO } from "@/lib/queries";
 import styles from "../page.module.css";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { Heading, HStack, Button, Text } from "@chakra-ui/react";
+import { Heading, HStack, Text } from "@chakra-ui/react";
 import EpisodeList from "@/components/EpisodeList";
 import { Link } from "@chakra-ui/next-js";
-import WelcomeModal from "@/components/WelcomeModal";
 const Page: React.FC = () => {
   const { loading, error, data } = useQuery(GET_INFO);
   const { user } = useUser();

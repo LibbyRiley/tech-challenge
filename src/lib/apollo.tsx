@@ -22,6 +22,6 @@ export function initializeApollo(initialState = null) {
   return client;
 }
 
-export function useApollo(initialState: any) {
+export function useApollo(initialState: any = undefined) {
   return initializeApollo(initialState);
 }
