@@ -28,3 +28,9 @@ The Information page is a protected route, and users need to "log in" by complet
 ## Technologies Used
 
 The project uses Next.js, Typescript, Chakra UI, and Apollo Client to implement the user interface and handle GraphQL queries.
+
+## Bugs/challenges found and fixed:
+
+[x] Adding localStorage threw hydration errors, fixed with a useEffect after sleeping on it.
+[x] WelcomeModal was _sometimes_ opening on return to Homepage from information page. Fixed by removing wrapping conditional, and adding onClose to onClick of the modal's 'Go to information page' link.
+[x] Didnt have correct logged in rules, after adding name and leaving the job title blank, the app was still allowing access to edit and loggout button and the info page. Fixed by adding a loggedIn property to user

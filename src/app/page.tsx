@@ -1,22 +1,35 @@
 "use client";
 import React, { useEffect } from "react";
 import styles from "./page.module.css";
-import { Button, Heading, Stack } from "@chakra-ui/react";
+import { Button, HStack, Heading, Stack } from "@chakra-ui/react";
 import WelcomeModal from "@/components/WelcomeModal";
 import { useUser } from "@/context/UserContext";
 import { Link } from "@chakra-ui/next-js";
 const LoginButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   return <Button onClick={onClick}>Login</Button>;
 };
-
+const LogoutButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+  return (
+    <Button variant="outline" onClick={onClick}>
+      Logout
+    </Button>
+  );
+};
 const EditButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
-  return <Button onClick={onClick}>Edit User Details</Button>;
+  return (
+    <Button variant="solid" onClick={onClick}>
+      Edit User Details
+    </Button>
+  );
 };
 
 export default function Home() {
-  const { user, isModalOpen, openModal, closeModal } = useUser();
+  const { user, setUser, isModalOpen, openModal, closeModal } = useUser();
   const handleModalOpen = () => {
     openModal();
+  };
+  const handleLogout = () => {
+    setUser(null);
   };
   return (
     <main className={styles.main}>
@@ -26,20 +39,21 @@ export default function Home() {
           Challenge Attempt
         </Heading>
 
-        {!user ? (
+        {!user?.loggedIn ? (
           <LoginButton onClick={handleModalOpen} />
         ) : (
           <>
-            <EditButton onClick={handleModalOpen} />
+            <HStack>
+              <EditButton onClick={handleModalOpen} />
+              <LogoutButton onClick={handleLogout} />
+            </HStack>
             <Link href="/information" mt={6}>
-              Go to the Information page
+              Go to the Information page &gt;
             </Link>
           </>
         )}
       </Stack>
-      {isModalOpen && (
-        <WelcomeModal isOpen={isModalOpen} onClose={closeModal} />
-      )}
+      <WelcomeModal isOpen={isModalOpen} onClose={closeModal} />
     </main>
   );
 }

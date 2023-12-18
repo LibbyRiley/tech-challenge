@@ -43,6 +43,7 @@ const SetNameStep: React.FC<StepProps> = ({ onNext }) => {
         ...prevUser,
         username: nameInput,
         jobTitle: prevUser?.jobTitle || "", // Ensure jobTitle is defined (threw me an error without this)
+        loggedIn: !!nameInput && !!prevUser?.jobTitle,
       }));
       onNext && onNext();
     } else {
@@ -71,7 +72,7 @@ const SetNameStep: React.FC<StepProps> = ({ onNext }) => {
             onClick={handleSaveName}
             aria-label="Save and continue to the next step"
           >
-            Next Step
+            Save and Continue
           </Button>
         </Flex>
       </Stack>
@@ -95,12 +96,14 @@ const SetJobTitleStep: React.FC<StepProps> = ({ onNext, onPrev }) => {
 
   const handleSaveJobTitle = () => {
     // Check if the trimmed jobTitleInput is not empty
+    console.log(!!user?.username && !!jobTitleInput);
     if (jobTitleInput.trim() !== "") {
       // Update the user state with the new jobTitle and ensure username is defined
       setUser((prevUser) => ({
         ...prevUser,
         username: prevUser!.username || "", // Ensure username is defined (threw me an error without this)
         jobTitle: jobTitleInput,
+        loggedIn: true,
       }));
       onNext && onNext();
     } else {
@@ -112,7 +115,7 @@ const SetJobTitleStep: React.FC<StepProps> = ({ onNext, onPrev }) => {
   return (
     <>
       <Button size="xs" onClick={onPrev}>
-        Go Back
+        &lt; Go Back
       </Button>
       <Stack py={6}>
         <FormControl isInvalid={isError} isRequired my={2}>
@@ -133,7 +136,7 @@ const SetJobTitleStep: React.FC<StepProps> = ({ onNext, onPrev }) => {
           onClick={handleSaveJobTitle}
           aria-label="Save your details"
         >
-          Save
+          Save and Continue
         </Button>
       </Stack>
     </>
@@ -150,7 +153,9 @@ const CompleteStep: React.FC<StepProps> = ({ onPrev, onClose }) => {
         <Heading my={4} as="h3">
           Success!
         </Heading>
-        <Link href="information">Go to the Information page</Link>
+        <Link href="information" onClick={onClose}>
+          Go to the Information page
+        </Link>
       </Stack>
     </>
   );
@@ -181,7 +186,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose }) => {
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleCloseModal}
       size="lg"
       closeOnOverlayClick={false}
     >

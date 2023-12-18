@@ -16,7 +16,6 @@ const Page: React.FC = () => {
       <main className={styles.main}>
         <section>
           <HStack justifyContent={"space-between"}>
-            {/* TODO Sometimes this link triggers the user details modal again? */}
             <Link href="/">&lt; Return Home</Link>
             <Text>Hello {user?.username} 👋</Text>
           </HStack>

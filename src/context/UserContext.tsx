@@ -11,8 +11,9 @@ interface UserContextProps {
 }
 
 interface User {
-  username: string;
-  jobTitle: string;
+  username?: string;
+  jobTitle?: string;
+  loggedIn?: boolean;
 }
 
 interface UserContextType {
@@ -26,24 +27,25 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<UserContextProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>({
+    username: "",
+    jobTitle: "",
+    loggedIn: false,
+  });
 
-  // Attempted localStorage, but ran into SSR hydration issues
-  //   const [user, setUser] = useState<User | null>(() => {
-  //     // Check if localStorage is defined before attempting to use it
-  //     if (typeof window !== "undefined") {
-  //       const storedUser = localStorage.getItem("user");
-  //       return storedUser ? JSON.parse(storedUser) : null;
-  //     }
-  //     return null; // Handle the case where localStorage is not available
-  //   });
+  useEffect(() => {
+    // Check if we're on the client side before using localStorage
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
-  //   useEffect(() => {
-  //     // Check if localStorage is defined before attempting to use it
-  //     if (typeof window !== "undefined") {
-  //       localStorage.setItem("user", JSON.stringify(user));
-  //     }
-  //   }, [user]);
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    }
+  }, [user]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const openModal = () => {
@@ -55,7 +57,13 @@ export const UserProvider: React.FC<UserContextProps> = ({ children }) => {
   };
   return (
     <UserContext.Provider
-      value={{ user, setUser, isModalOpen, openModal, closeModal }}
+      value={{
+        user,
+        setUser,
+        isModalOpen,
+        openModal,
+        closeModal,
+      }}
     >
       {children}
     </UserContext.Provider>
